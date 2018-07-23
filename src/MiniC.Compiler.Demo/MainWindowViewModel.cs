@@ -1,55 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using MiniC.Compiler.Demo.Annotations;
 using MiniC.Compiler.Demo.TreeItems;
 
 namespace MiniC.Compiler.Demo
 {
 	public class MainWindowViewModel : INotifyPropertyChanged
-	{
+    {
 		private string _sourceCode;
 		public string SourceCode
 		{
-			get { return _sourceCode; }
-			set
+			get => _sourceCode;
+		    set
 			{
 				_sourceCode = value;
 				Recompile();
-				OnPropertyChanged("SourceCode");
+				OnPropertyChanged();
 			}
 		}
 
 		private string _compilerErrors;
 		public string CompilerErrors
 		{
-			get { return _compilerErrors; }
-			set
+			get => _compilerErrors;
+		    set
 			{
 				_compilerErrors = value;
-				OnPropertyChanged("CompilerErrors");
+				OnPropertyChanged();
 			}
 		}
 
 		private IEnumerable<TreeItemBase> _abstractSyntaxTree;
 		public IEnumerable<TreeItemBase> AbstractSyntaxTree
 		{
-			get { return _abstractSyntaxTree; }
-			private set
+			get => _abstractSyntaxTree;
+		    private set
 			{
 				_abstractSyntaxTree = value;
-				OnPropertyChanged("AbstractSyntaxTree");
+				OnPropertyChanged();
 			}
 		}
 
 		private IL.ILClass _intermediateLanguage;
 		public IL.ILClass IntermediateLanguage
 		{
-			get { return _intermediateLanguage; }
-			set
+			get => _intermediateLanguage;
+		    set
 			{
 				_intermediateLanguage = value;
-				OnPropertyChanged("IntermediateLanguage");
+				OnPropertyChanged();
 			}
 		}
 
@@ -92,10 +93,9 @@ int main(void) {
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		[NotifyPropertyChangedInvocator]
-		protected virtual void OnPropertyChanged(string propertyName)
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		#endregion
